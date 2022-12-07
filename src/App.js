@@ -1,24 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { Container } from "react-bootstrap";
+import { Route, Routes } from "react-router-dom";
+import ItemProvider from "./assets/contexts/ItemProvider";
+import Home from "./components/Home";
+import Navbar from "./components/Navbar";
+import Store from "./components/Store";
+import "./App.css";
+import { useState } from "react";
+import Cart from "./components/Cart";
 
 function App() {
+  const [showCart, setShowCart] = useState(false);
+
+  const showCartHandler = () => {
+    setShowCart(true);
+  };
+
+  const hideCartHandler = () => {
+    setShowCart(false);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ItemProvider>
+      <Navbar onShow={showCartHandler} />
+      <Container className="mb-4 mt-4">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/store" element={<Store />} />
+        </Routes>
+      </Container>
+      {showCart && <Cart onHide={hideCartHandler} />}
+    </ItemProvider>
   );
 }
 
